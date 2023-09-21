@@ -1,25 +1,23 @@
-name: Bandit Security Scan
+import os
 
-on:
-  push:
-    branches:
-      - main
+def read_sensitive_data():
+    # Sensitive data should be stored in environment variables
+    # Retrieve the secret key from an environment variable
+    secret_key = os.environ.get('SECRET_KEY')
+    if secret_key is not None:
+        print("Secret Key:", secret_key)
+    else:
+        print("Secret Key not found")
 
-jobs:
-  bandit_scan:
-    runs-on: ubuntu-latest
+def execute_command():
+    # Avoid using os.system, which can execute arbitrary commands
+    print("Executing a safe command")
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
+def use_of_insecure_function():
+    # Avoid using eval, which is insecure
+    print("Avoided insecure function")
 
-      - name: Set Up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-
-      - name: Install Dependencies
-        run: pip install bandit
-
-      - name: Run Bandit Security Scan
-        run: bandit -r .
+if __name__ == '__main__':
+    read_sensitive_data()
+    execute_command()
+    use_of_insecure_function()
